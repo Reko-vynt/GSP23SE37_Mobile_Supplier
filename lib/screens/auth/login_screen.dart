@@ -1,23 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gsp23se37_mobile_supplier/screens/auth/register_screen.dart';
 import 'package:gsp23se37_mobile_supplier/screens/auth/verify_screen.dart';
+import 'package:gsp23se37_mobile_supplier/utils/style.dart';
 
-import '../../utils/style.dart';
-
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Đăng ký', style: MyStyle.appBarTextStyle),
+        title: Text('Đăng nhập', style: MyStyle.appBarTextStyle),
         backgroundColor: MyStyle.mainColor,
         centerTitle: true,
       ),
@@ -102,7 +105,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Navigator.push(context, MaterialPageRoute(builder: (context)=> VerifyScreen(phoneNumber: _phoneNumberController.text)));
                 },
                 style: MyStyle.myButtonStyle,
-                child: Text('Gửi OTP', style: MyStyle.textButton),
+                child: Text('Đăng nhập', style: MyStyle.textButton),
+              ),
+            ),
+            const SizedBox(height: 8.0,),
+            SizedBox(
+              height: 56,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterScreen()));
+                },
+                style: MyStyle.myButtonStyle,
+                child: Text('Đăng Ký', style: MyStyle.textButton),
               ),
             ),
           ],
