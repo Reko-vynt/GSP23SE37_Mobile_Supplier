@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gsp23se37_mobile_supplier/screens/auth/register_screen.dart';
@@ -37,18 +35,24 @@ class _LoginScreenState extends State<LoginScreen> {
               color: MyStyle.mainColor,
             ),
             // text welcome
-            const SizedBox(height: 8.0,),
+            const SizedBox(
+              height: 8.0,
+            ),
             Text(
               'Chào mừng bạn đến với ESMP',
               style: MyStyle.textH1Style,
             ),
-            const SizedBox(height: 8.0,),
+            const SizedBox(
+              height: 8.0,
+            ),
             Text(
               'Đăng nhập để tham gia vào hê thống của chúng tôi',
               style: MyStyle.textH2Style,
             ),
             // phone number
-            const SizedBox(height: 8.0,),
+            const SizedBox(
+              height: 8.0,
+            ),
             Container(
               height: 56,
               width: double.infinity,
@@ -96,25 +100,36 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             // buttom login
-            const SizedBox(height: 8.0,),
+            const SizedBox(
+              height: 8.0,
+            ),
             SizedBox(
               height: 56,
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> VerifyScreen(phoneNumber: _phoneNumberController.text)));
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => VerifyScreen(
+                              phoneNumber: _phoneNumberController.text)));
                 },
                 style: MyStyle.myButtonStyle,
                 child: Text('Đăng nhập', style: MyStyle.textButton),
               ),
             ),
-            const SizedBox(height: 8.0,),
+            const SizedBox(
+              height: 8.0,
+            ),
             SizedBox(
               height: 56,
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterScreen()));
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterScreen()));
                 },
                 style: MyStyle.myButtonStyle,
                 child: Text('Đăng Ký', style: MyStyle.textButton),
