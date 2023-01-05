@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsp23se37_mobile_supplier/screens/productscreen.dart';
+import 'package:gsp23se37_mobile_supplier/screens/mainscreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const ProductScreen(),
+      home: const MainScreen(),
     );
   }
 }
