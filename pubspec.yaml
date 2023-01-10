@@ -39,6 +39,10 @@ dependencies:
   pinput: ^2.2.21
   font_awesome_flutter: ^10.3.0
   salomon_bottom_bar: ^3.3.1
+  bloc: ^8.1.0
+  equatable: ^2.0.5
+  shared_preferences: ^2.0.15
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:
