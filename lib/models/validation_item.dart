@@ -1,5 +1,5 @@
 class ValidationItem {
-  final String value;
-  final String error;
-  ValidationItem({required this.value, required this.error});
+  final String? value;
+  final String? error;
+  ValidationItem(this.value, this.error);
 }

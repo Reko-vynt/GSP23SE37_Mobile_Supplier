@@ -63,7 +63,7 @@ class DioClient {
                   return e.error;
                 });
                 return e.error;
-              } catch (error, st) {
+              } catch (error) {
                 log(error.toString());
               }
             }

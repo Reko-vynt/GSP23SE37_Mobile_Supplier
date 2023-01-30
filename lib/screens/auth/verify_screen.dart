@@ -4,8 +4,9 @@ import 'package:pinput/pinput.dart';
 import '../../utils/style.dart';
 
 class VerifyScreen extends StatefulWidget {
-  const VerifyScreen({Key? key, required this.phoneNumber}) : super(key: key);
+  const VerifyScreen({Key? key, required this.phoneNumber, required this.verificationId}) : super(key: key);
   final String phoneNumber;
+  final String verificationId;
 
   @override
   State<VerifyScreen> createState() => _VerifyScreenState();

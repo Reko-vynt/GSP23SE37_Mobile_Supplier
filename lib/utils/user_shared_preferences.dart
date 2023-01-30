@@ -9,7 +9,7 @@ class UserSharePre {
     bool result = true;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      prefs.setString("userID", user.userID);
+      prefs.setInt("userID", user.userID);
       prefs.setString("token", user.token!);
     } catch (e) {
       log(e.toString());
@@ -24,7 +24,7 @@ class UserSharePre {
     if (userId == null) {
       return null;
     } else {
-      return User(userID: userId.toString());
+      return User(userID: userId);
     }
   }
 

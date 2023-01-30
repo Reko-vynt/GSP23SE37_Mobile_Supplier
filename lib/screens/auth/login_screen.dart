@@ -1,8 +1,16 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gsp23se37_mobile_supplier/blocs/login/login_bloc.dart';
+import 'package:gsp23se37_mobile_supplier/network/dio/dio_client.dart';
+import 'package:gsp23se37_mobile_supplier/network/services/authentication_service.dart';
+import 'package:gsp23se37_mobile_supplier/router/app_router_constants.dart';
 import 'package:gsp23se37_mobile_supplier/screens/auth/register_screen.dart';
 import 'package:gsp23se37_mobile_supplier/screens/auth/verify_screen.dart';
 import 'package:gsp23se37_mobile_supplier/utils/style.dart';
+import 'package:gsp23se37_mobile_supplier/utils/widgets/my_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,131 +21,164 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
+  Dio dio = Dio();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Đăng nhập', style: MyStyle.appBarTextStyle),
-        backgroundColor: MyStyle.mainColor,
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // image
-            Container(
-              height: 200,
-              width: 200,
-              color: MyStyle.mainColor,
-            ),
-            // text welcome
-            const SizedBox(
-              height: 8.0,
-            ),
-            Text(
-              'Chào mừng bạn đến với ESMP',
-              style: MyStyle.textH1Style,
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            Text(
-              'Đăng nhập để tham gia vào hê thống của chúng tôi',
-              style: MyStyle.textH2Style,
-            ),
-            // phone number
-            const SizedBox(
-              height: 8.0,
-            ),
-            Container(
-              height: 56,
-              width: double.infinity,
-              // color: Colors.grey,
-              decoration: const BoxDecoration(
-                color: Color(0xFFeef2f9),
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              ),
-              child: Row(
-                children: <Widget>[
-                  const SizedBox(
-                    width: 8.0,
-                  ),
-                  Icon(
-                    Icons.phone_android_outlined,
-                    size: MyStyle.iconSize,
-                    color: MyStyle.mainColor,
-                  ),
-                  Text(
-                    '+84',
-                    style: MyStyle.textH2Style,
-                  ),
-                  const SizedBox(
-                    width: 8.0,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                      textAlign: TextAlign.left,
-                      style: MyStyle.textH2Style,
-                      controller: _phoneNumberController,
-                      maxLines: 1,
-                      keyboardType: TextInputType.phone,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+    return BlocProvider(
+      create: (context) =>
+          LoginBloc(AuthenticationService()),
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('Đăng nhập', style: MyStyle.appBarTextStyle),
+            backgroundColor: MyStyle.mainColor,
+            centerTitle: true,
+          ),
+          body: BlocConsumer<LoginBloc, LoginState>(
+              builder: (context, state) =>
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // image
+                        Container(
+                          height: 200,
+                          width: 200,
+                          color: MyStyle.mainColor,
+                        ),
+                        // text welcome
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        Text(
+                          'Chào mừng bạn đến với ESMP',
+                          style: MyStyle.textH1Style,
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        Text(
+                          'Đăng nhập để tham gia vào hê thống của chúng tôi',
+                          style: MyStyle.textH2Style,
+                        ),
+                        // phone number
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        Container(
+                          height: (state is LoginFailed) ? 56 + 16 : 56,
+                          width: double.infinity,
+                          // color: Colors.grey,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFeef2f9),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  const SizedBox(
+                                    width: 8.0,
+                                  ),
+                                  Icon(
+                                    Icons.phone_android_outlined,
+                                    size: MyStyle.iconSize,
+                                    color: MyStyle.mainColor,
+                                  ),
+                                  Text(
+                                    '+84',
+                                    style: MyStyle.textH2Style,
+                                  ),
+                                  const SizedBox(
+                                    width: 8.0,
+                                  ),
+                                  Expanded(
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                        errorText: (state is LoginFailed)
+                                            ? state.phoneError
+                                            : null,
+                                        border: InputBorder.none,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                      style: MyStyle.textH2Style,
+                                      controller: _phoneNumberController,
+                                      maxLines: 1,
+                                      keyboardType: TextInputType.phone,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp('[0-9]')),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 16.0,
+                                  ),
+                                ],
+                              ),
+                              Center(
+                                child: Container(),
+                              )
+                            ],
+                          ),
+                        ),
+                        // buttom login
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        SizedBox(
+                          height: 56,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => VerifyScreen(
+                              //             phoneNumber: _phoneNumberController.text)));
+                              context.read<LoginBloc>().add(LoginPressed(
+                                  phoneNumber: _phoneNumberController.text,
+                                  onSuccess: () {
+                                    if (state is LoginSuccess) {
+                                      Navigator.push(context, MaterialPageRoute(
+                                          builder: (context) =>
+                                              VerifyScreen(
+                                                  phoneNumber: _phoneNumberController
+                                                      .text,
+                                                  verificationId: state.verificationId)));
+                                    }
+                                  }
+                              ));
+                            },
+                            style: MyStyle.myButtonStyle,
+                            child: Text('Đăng nhập', style: MyStyle.textButton),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        SizedBox(
+                          height: 56,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              GoRouter.of(context).pushNamed(AppRouterConstants.registerRouteName);
+                            },
+                            style: MyStyle.myButtonStyle,
+                            child: Text('Đăng Ký', style: MyStyle.textButton),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    width: 16.0,
-                  ),
-                ],
-              ),
-            ),
-            // buttom login
-            const SizedBox(
-              height: 8.0,
-            ),
-            SizedBox(
-              height: 56,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => VerifyScreen(
-                              phoneNumber: _phoneNumberController.text)));
-                },
-                style: MyStyle.myButtonStyle,
-                child: Text('Đăng nhập', style: MyStyle.textButton),
-              ),
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            SizedBox(
-              height: 56,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegisterScreen()));
-                },
-                style: MyStyle.myButtonStyle,
-                child: Text('Đăng Ký', style: MyStyle.textButton),
-              ),
-            ),
-          ],
-        ),
-      ),
+              listener: (context, state) {
+                if (state is LoginFailed && state.errorMessage != null) {
+                  MyDialog().showSnackBar(context, state.errorMessage!);
+                }
+              })),
     );
   }
 }
